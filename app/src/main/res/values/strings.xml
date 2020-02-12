@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ImageProcessing App</string>
+    <string name="title_activity_capture_image">CaptureImage</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+</resources>
