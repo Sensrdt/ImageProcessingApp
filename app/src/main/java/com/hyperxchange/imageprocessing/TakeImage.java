@@ -62,8 +62,8 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
          * Uploading the Image
          */
 
-//        s3credentialsProvider();
-//        setTransferUtility(); 
+        s3credentialsProvider();
+        setTransferUtility();
 
 
 
@@ -105,7 +105,7 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
                         fileOutputStream.close();
                         Log.d(TAG_CLASS, "rearImage " + String.valueOf(rearImage));
                         // add pathname
-                        //uploadFileToS3(rearImage, message);
+                        uploadFileToS3(rearImage, message);
                         hyperXchangeDir = null;
                         rearImage = null;
                         completeActivity(true);
@@ -173,11 +173,12 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
     }
 
     private void s3credentialsProvider() {
+        Toast.makeText(getApplicationContext(), "s3Credentials",Toast.LENGTH_LONG).show();
         CognitoCachingCredentialsProvider cognitoCachingCredentialsProvider =
                 new CognitoCachingCredentialsProvider(
                         getApplicationContext(),
                         Constants.identity_pool_id, // Identity Pool ID
-                        Constants.region // Region
+                        Regions.AP_SOUTH_1 // Region
                 );
         Log.d(TAG_CLASS, "s3credentialsProvider");
         createAmazonS3Client(cognitoCachingCredentialsProvider);

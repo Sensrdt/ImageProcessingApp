@@ -10,7 +10,7 @@ public class Constants {
     public static final String bucket = "santa-claus";
 
     // Firebase
-    public static final String topic = "hx-image";
+    public static final String topic = "hx_image";
 
     // Device
     public static final String device_folder_name = "HXImage";
