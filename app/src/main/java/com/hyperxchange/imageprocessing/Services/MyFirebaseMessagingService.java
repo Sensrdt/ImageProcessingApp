@@ -1,21 +1,13 @@
 
-package com.hyperxchange.imageprocessing;
+package com.hyperxchange.imageprocessing.Services;
 
-import android.app.Notification;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.util.Map;
+import com.hyperxchange.imageprocessing.TakeImage;
 
 import static android.content.ContentValues.TAG;
 

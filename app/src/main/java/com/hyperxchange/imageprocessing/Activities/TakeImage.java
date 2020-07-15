@@ -32,6 +32,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.hyperxchange.imageprocessing.Helper.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,12 +56,16 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_image);
 
-        // AWS S3 //
+        /**
+         * function to
+         * Setting the AWS Configuration
+         * Uploading the Image
+         */
 
-//        s3credentialsProvider();
-//        setTransferUtility(); 
+        s3credentialsProvider();
+        setTransferUtility();
 
-        // --$$-- //
+
 
         Bundle extras = getIntent().getExtras();
         final String message = extras.getString("message");
@@ -78,7 +83,7 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
             public void onPictureTaken(byte[] bytes, Camera camera) {
 
                 File hyperXchangeDir = new File(Environment.getExternalStorageDirectory()
-                        + File.separator + "HXImage" );
+                        + File.separator + Constants.device_folder_name );
                 if (!hyperXchangeDir.exists()) {
                     hyperXchangeDir.mkdirs();
                     Log.d(TAG_CLASS,"MKDIR ");
@@ -100,7 +105,7 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
                         fileOutputStream.close();
                         Log.d(TAG_CLASS, "rearImage " + String.valueOf(rearImage));
                         // add pathname
-                        //uploadFileToS3(rearImage, message);
+                        uploadFileToS3(rearImage, message);
                         hyperXchangeDir = null;
                         rearImage = null;
                         completeActivity(true);
@@ -168,10 +173,11 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
     }
 
     private void s3credentialsProvider() {
+        Toast.makeText(getApplicationContext(), "s3Credentials",Toast.LENGTH_LONG).show();
         CognitoCachingCredentialsProvider cognitoCachingCredentialsProvider =
                 new CognitoCachingCredentialsProvider(
                         getApplicationContext(),
-                        "ap-south-1:6ce52009-fdc9-4034-a58a-f784719679fe", // Identity Pool ID
+                        Constants.identity_pool_id, // Identity Pool ID
                         Regions.AP_SOUTH_1 // Region
                 );
         Log.d(TAG_CLASS, "s3credentialsProvider");
@@ -182,7 +188,7 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
 
         s3Client = new AmazonS3Client(cognitoCachingCredentialsProvider);
 
-        s3Client.setRegion(Region.getRegion(Regions.AP_SOUTH_1));
+        s3Client.setRegion(Region.getRegion(Constants.region));
         Log.d(TAG_CLASS, "createAmazonS3Client");
     }
 
@@ -194,7 +200,7 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
     public void uploadFileToS3(File uploadToS3, String message){
 
         TransferObserver transferObserver = transferUtility.upload(
-                "santa-claus",     /* The bucket to upload to */
+                Constants.bucket,     /* The bucket to upload to */
                 message + ".jpg",    /* The key for the uploaded object */
                 uploadToS3       /* The file where the data to upload exists */
         );
@@ -229,11 +235,11 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
         Log.d(TAG_CLASS, "transferObserverListener");
     }
 
-    /*
-     * Ends here
+
+    /**
+     * Camera view and take Image
+     * @param holder
      */
-
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -291,17 +297,6 @@ public class TakeImage extends AppCompatActivity implements SurfaceHolder.Callba
         }
         Runtime.getRuntime().gc();
     }
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 7 && resultCode == RESULT_OK) {
-//
-//            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//
-//            imageView.setImageBitmap(bitmap);
-//            Intent intent = new Intent(TakeImage.this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
+
 
 }
